@@ -7,4 +7,7 @@
 		"p5": "^0.6.1",
 		"socket.io": "^2.1.1"
 	}
+	"scripts": {
+	  "start": "node index.js"
+	}
 }
