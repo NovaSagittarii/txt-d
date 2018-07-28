@@ -56,7 +56,7 @@ function updateConfig(newConfig){
 }
 
 //initialize
-function setup() {
+/*function setup() {
   createCanvas(windowWidth, windowHeight);
   noCursor();
   rectMode(CENTER);
@@ -69,7 +69,7 @@ function setup() {
   socket.on('setConfig', updateConfig);
   socket.emit('requestConfig', name);
   for(var i = 0; i < sendable.length; i ++) keys[sendable[i]] = false;
-}
+}*/
 
 //update current state by sending data to server to sync server with client
 function keyPressed() {
