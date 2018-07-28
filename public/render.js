@@ -1,185 +1,182 @@
-const PELLET = 0, TWIN = 1, GATLING = 2, SHOTGUN = 3, RAIL = 4;
-const MISSILE = 0, BURST = 1;
-const EXHAUST = 0, M_EXHAUST = 1;
-var pDecay = [10, 15];
-var particles = [];
+// Objective: This program/game is designed for players to learn the dangers of texting & driving and how multitasking is probably not a good idea.
 
-function Particle(x, y, va, a, v, av, type){
+var x = 0;
+var y = 0;
+var a = 0;
+var v = 0;
+var r = 0;
+var coordinate = function(x, y, r){
   this.x = x;
   this.y = y;
-  this.a = a;  // velocity direction
-  this.o = va; // Orientation (visual angle)
-  this.v = v;
-  this.av = av;
-  this.t = type;
-  this.d = 255;
-}
-Particle.prototype.process = function(){
-  this.x += Math.cos(this.a) * this.v;
-  this.y += Math.sin(this.a) * this.v;
-  this.a += this.av;
-  push();
-  translate(this.x, this.y);
-  rotate(this.o);
-  switch(this.t){
-    case EXHAUST:
-    case M_EXHAUST:
-      this.v /= 1.02;
-      fill(255, this.d, 0, this.d*1.4);
-      //rect(0, 0, 100, 100);
-      scale(this.t===EXHAUST ? 1 : 0.6);
-      triangle(10, 0, -5, 8.6, -5, -8.6);
-      break;
+  this.r = r;
+};
+
+var typing = `boi pls pay attention at the road ahead of you so that you dont fail terribly at driving lorem ipsum dolor set the fitnessgram pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues to get more difficult   Chess is a relatively bad tactical turn based RPG developed by a bunch of monkeys. Right away you'll notice Chess has no storyline. Instead, all you notice is the White army and the Black army are fighting each other over a battlefield. Note the a 'battlefield,' because Chess only has one story map. As for the actual combat, it's extremely dull. Each unit can kill another with only one hit. This means units with a real good movement ability dominate the field (more on that bellow). There aren't even any combat animations or anything that happens in combat. One unit moves on it's space and 'captures' it, and the piece is removed from the game with no form of action or special effects. oh by the way this doesn't end, but in real life, remember to not text and drive at the same time"`;
+var typed = "";
+var keys = [];
+var locations = [];
+var decay = []; // transitive array
+var ytrans = 0;
+var mp;
+
+var keyPressed = function(){
+  keys[keyCode] = true;
+  if(keyCode === 8){
+    typed = typed.split('').splice(0, typed.length-1).join('');
+    ytrans = -25;
   }
-  pop();
-  this.d -= pDecay[this.t];
-  return this.d < 0; // returns true if to be removed
-}
-
-function draw() {
-  background(0, 0, 0);
-  strokeWeight(2);
-  noStroke();
-  fill(255, 255, 255);
-  //rect(0, 0, 700, 50);
-  //fill(0, 0, 0);
-  textSize(12);
-  text(`${~~frameRate()}FPS\n ${~~config.targetFrameRate}`, 30, 20);
-  text(plyrs.length+1 + " active users\n\nWASD - movement\nJ - primary weapon\nK - secondary weapon", width/2, 50);
-
-  //transformations to center player to center of screen and lock viewing orientation to face upwards
-  translate(~~(width/2), ~~(height/2));
-  rotate(3/2*Math.PI - a + av);
-  translate(-x, -y);
-
-  for(let i = 0; i < particles.length; i ++){
-    if(particles[i].process()) particles.splice(i, 1);
-  }
-
-  fill(255, 150, 150);
-
-  // renders all players
-  for(let i = 0; i < plyrs.length; i ++){
-    let plyr = plyrs[i];
-    push();
-    translate(plyr.x, plyr.y);
-    rotate(plyr.a);
-    /*stroke(100, 255, 255, plyr.sp);
-    strokeWeight(2+plyr.sp/25);*/
-    triangle(10, 0, -10, -7, -10, 7);
-
-    rotate(Math.PI/2 - plyr.a + a)
-    text(plyr.name, 0, 20);
-    fill(255, 0, 0, 100);
-    rect(-25+25*plyr.ap/100, -20, 50*plyr.ap/100, 3);
-    fill(100, 100, 255, 100);
-    rect(-25+25*plyr.sp/100, -23, 50*plyr.sp/100, 3);
-
-    pop();
-    if(plyr.accel) particles.push(new Particle(plyr.x - Math.cos(plyr.a)*15, plyr.y - Math.sin(plyr.a)*15, Math.random()*Math.PI*2, plyr.a + Math.random()*0.5-0.25, -3, 0, EXHAUST));
-  }
-  noStroke();
-
-  //render projectiles
-  for(let i = 0; i < projectiles.length; i ++){
-    let obj = projectiles[i];
-    push();
-    translate(obj.x, obj.y);
-    rotate(obj.a);
-    fill(200, obj.d*2);
-    switch(obj.type){
-      case "pw":
-        switch(obj.id){
-          case PELLET:
-          case TWIN:
-          case SHOTGUN:
-            rect(0, 0, 9, 4);
-            break;
-          case GATLING:
-            rect(0, 0, 6, 3);
-            break;
-          case RAIL:
-            rect(0, 0, 40, 2, 2);
-            particles.push(new Particle(obj.x - Math.cos(obj.a) * 10, obj.y - Math.sin(obj.a) * 10, Math.random()*Math.PI*2, obj.a + Math.random()*0.3-0.15, -1, 0, M_EXHAUST));
-        }
-        break;
-      case "sw":
-        switch(obj.id){
-          case MISSILE:
-          case BURST:
-            quad(7, 0, -7, 5, -4, 0, -7, -5);
-            particles.push(new Particle(obj.x - Math.cos(obj.a) * 10, obj.y - Math.sin(obj.a) * 10, Math.random()*Math.PI*2, obj.a + Math.random()*0.3-0.15, -1, 0, M_EXHAUST));
-            break;
-        }
-        break;
-      case "expl":
-        for(let j = 0; j < 24*obj.a; j ++){
-          particles.push(new Particle(obj.x, obj.y, Math.random()*Math.PI*2, Math.random()*Math.PI*2, Math.random()*5*obj.a, 0, M_EXHAUST));
-        }
-        projectiles.splice(i, 1);
-        break;
+  if(keyCode >= 32){
+    if(typed[typed.length-1] === typing[typed.length-1]){
+      var letter = String.fromCharCode(keyCode).toLowerCase();
+      typed += keys[SHIFT] ? letter.toUpperCase() : letter;
+      //typed += String.fromCharCode(key);
+      ytrans = 25;
+    }else{
+      ytrans = 25;
     }
+  }
+};
+var keyReleased = function(){
+  keys[keyCode] = false;
+};
+var mousePressed = function(){
+  mp = true;
+};
+
+var road = [new coordinate(0, 0, 0)];
+// [min, max, angleIncrement]
+var roadType = [[5, 15, 0], [5, 5, 0], [5, 5, 0], [5, 5, 18], [5, 5, -18], [8, 8, 22.5],  [8, 8, 22.5]];
+var roadMode = 0;
+var roadLeft = 10;
+var roadSize = 150;
+var updateRoad = function(){
+  if(roadLeft--){
+    var $i = road.length-1;
+    var $r = road[$i].r + Math.PI/180*(roadType[roadMode][2]);
+    var $x = road[$i].x + Math.cos($r) * roadSize;
+    var $y = road[$i].y + Math.sin($r) * roadSize;
+    road.push(new coordinate(
+      $x, $y, $r
+    ));
+  }else{
+    roadMode = ~~(Math.random() * roadType.length);
+    roadLeft = roadType[roadMode][0] + ~~(Math.random() * (roadType[roadMode][1]-roadType[roadMode][0]));
+  }
+};
+
+for(var i = 0; i < 12; i ++){
+  updateRoad();
+}
+
+x = road[0].x;
+y = road[0].y;
+var ll = 1;
+
+var dewae, cahr;
+function setup() {
+  //createCanvas(windowWidth, windowHeight);
+  createCanvas(800, 600);
+  //noCursor();
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  imageMode(CENTER);
+  strokeCap(PROJECT);
+  dewae = loadImage("assets/dewae.png");
+  cahr = loadImage("assets/cahr.png");
+}
+function draw(){
+  background(255, 255, 255);
+  fill(0, 0, 0);
+  noStroke();
+
+  translate(300, 400);
+  scale(Math.min(1/(v/10), 3));
+  translate(-x, -y);
+  if(road.length > 5){
+    if(dist(x, y, road[1].x, road[1].y) < roadSize){
+      if(dist(x, y, road[2].x, road[2].y) > roadSize){
+        updateRoad();
+      }
+      decay.push(Object.assign({d: 30}, road[0]));
+      road.splice(0, 1);
+      // score increment (called to extend the road)
+      console.log(ll++);
+    }
+    if(dist(x, y, road[0].x, road[0].y) > roadSize&&frameCount>40){
+      background(255,0, 0);
+      noLoop();
+    }
+  }
+
+  //fill(173);
+  for(var i = 0; i < decay.length; i ++){
+    push();
+    translate(decay[i].x, decay[i].y);
+    rotate(decay[i].r +Math.PI/2);
+    tint(255, decay[i].d*10);
+    image(dewae, 0, 0, 2*roadSize, 2*roadSize);
+    pop();
+    decay[i].x += (road[0].x - decay[i].x) / (30-v);
+    decay[i].y += (road[0].y - decay[i].y) / (30-v);
+    decay[i].r += (road[0].r - decay[i].r) / (30-v);
+    if(!(decay[i].d--)){
+      decay.splice(i, 1);
+    }
+  }
+  for(var i = 0; i < road.length; i ++){
+    push();
+    translate(road[i].x, road[i].y);
+    rotate(road[i].r +Math.PI/2);
+    image(dewae, 0, 0, 2*roadSize, 2*roadSize);
     pop();
   }
+  noTint();
 
-  stroke(255, 255, 255, 20);
-  noFill();
-  rect(config.width/2, config.height/2, config.width, config.height);
-
-  // render player
-  translate(x, y);
-  rotate(a);
-
-  fill(255, 255, 255);
-  /*stroke(100, 255, 255, sp);
-  strokeWeight(2+sp/25);*/
-  triangle(10, 0, -10, -7, -10, 7);
-  resetMatrix();
-  if(keys.w || keys.s){
-    xv += Math.cos(a) * accel * (1-1.2*keys.s);
-    yv += Math.sin(a) * accel * (1-1.2*keys.s);
-    particles.push(new Particle(x - Math.cos(a) * 15, y - Math.sin(a) * 15, Math.random()*Math.PI*2, a + Math.random()*0.5-0.25, -3, 0, EXHAUST));
+  for(var i = 0; i < locations.length; i ++){
+    push();
+    translate(locations[i].x, locations[i].y);
+    rotate(locations[i].r);
+    fill(0, 0, 0, i/10);
+    rect(0, 0, i, i);
+    pop();
   }
-  if(keys.a || keys.d) av += ts * (1-2*keys.a);
-  x += xv;
-  y += yv;
-  a += av;
-  xv /= 1.1;
-  yv /= 1.1;
-  av /= 1.1;
-  fill(255, 255, 255, 100);
-  noStroke();
-  quad(mouseX, mouseY, mouseX, mouseY + 15, mouseX + 5, mouseY + 10, mouseX + 10, mouseY + 10);
+  locations.splice(0, locations.length>100);
 
-  //---- GUI ----
-  strokeCap(PROJECT);
-  fill(255);
-  text(name, width/2, height/2+20);
-  fill(255, 255, 255, 50);
-  rect(185, height-50, 300, 30, 5);
-  fill(255, 0, 0, 100);
-  rect(40+145*ap/100, height-50, 290*ap/100, 15, 5);
-  text(Math.round(ap) + "AP", 55, height-75);
-  fill(100, 100, 255, 200);
-  rect(40+145*sp/100, height-50, 290*sp/100, 20, 5);
-  text(Math.round(sp) + "SP", 315, height-75);
+  r  = atan2(mouseY - 400, mouseX - 300);
+  translate(x, y);
+  rotate(r + Math.PI/2);
+  //fill(0, 0, 0, 100);
+  //rect(0, 0, 100, 100);
+  image(cahr, 0, 0, 100, 200);
+  y += Math.sin(r)*(v);
+  x += Math.cos(r)*(v);
+  v = constrain(v+0.0005*100, 3, 25);
+  locations.push(new coordinate(x, y, atan2(mouseY - 400, mouseX - 300)));
 
-  fill(255, 255, 255, 50);
-  ellipse(width-120, height-50, 50, 50);
-  ellipse(width-50, height-50, 50, 50);
+  resetMatrix();
 
-  text("PELLET TWIN GATLING SHOTGUN RAIL".split(' ')[pw], width-120, height-50);
-  text("MISSILE BURST".split(' ')[sw], width-50, height-50);
-  textSize(18);
-  text("J", width-95, height-25);
-  text("K", width-25, height-25);
-  strokeWeight(4);
-  noFill();
-  stroke(255, 255, 255, 100)
-  arc(width-120, height-50, 50, 50, 0, Math.PI*2*constrain(pwr/pwrof, 0, 1));
-  arc(width-50, height-50, 50, 50, 0, Math.PI*2*constrain(swr/swrof, 0, 1));
-  strokeWeight(1);
-}
+  textSize(25);
+  fill(0, 0, 0, 50);
+  rect(225, 127, 30, 120);
+  translate(200+ytrans, 0);
+  for(var i = typed.length-10; i < Math.min(typed.length+10, typing.length); i ++){
+    fill(0, 0, 0, 30);
+    rect((i-typed.length)*25+25, 100, 20, 50);
+    fill(0);
+    text(typing[i], (i-typed.length)*25+25, 100);
+    fill(0, 0, 0, 30);
+    rect((i-typed.length)*25+25, 155, 20, 50);
+    fill(0);
+    text(typed[i], (i-typed.length)*25+25, 155);
+  }
+  ytrans /= 1.2;
+  resetMatrix();
+
+  text(~~frameRate() + "fps", 45, 25);
+  mp = false;
+};
+
+
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
