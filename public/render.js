@@ -94,6 +94,7 @@ function draw(){
     rotate(plyrs[i].r + Math.PI/2);
     image(notu, 0, 0, 100, 200);
     pop();
+    exhaust.push(Object.assign({d: 40}, new xyr(plyrs[i].x+Math.cos(plyrs[i].r+Math.PI)*100, plyrs[i].y+Math.sin(plyrs[i].r+Math.PI)*100, plyrs[i].r)));
   }
 
   //r  = atan2(mouseY - 400, mouseX - 300);
