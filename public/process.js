@@ -41,11 +41,10 @@ socket.on('dataBroadcast', update);
 const rant = ["Texting can make vehicle accidents 23 times more likely to happen.", "Each day in the United States, approximately 9 people are killed and more than 1,000 injured in crashes that are reported to involve a distracted driver", "In 2015, there were 3,477 people killed and an estimated additional 391,000 injured in motor vehicle crashes involving distractions."]; 
 socket.on('die', function(){
   noLoop();
-  background(255, 255, 255);
-  fill(0, 0, 0);
+  draw = function(){background(0,0,0);};
   textSize(20);
   for(var i = 0; i < rant.length; i ++){
-    text(rant[i], width/2, 200+i*200, width/2, 200);
+    alert(rant[i]);
   }
 });
 //initialize
