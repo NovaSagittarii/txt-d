@@ -91,7 +91,7 @@ function draw(){
   for(let i = 0; i < plyrs.length; i ++){
     push();
     translate(plyrs[i].x, plyrs[i].y);
-    rotate(plyrs[i].r);
+    rotate(plyrs[i].r + Math.PI/2);
     image(notu, 0, 0, 100, 200);
     pop();
   }
