@@ -11,14 +11,10 @@ const config = {
 app.use(express.static('./public'));
 
 var gmap = [];
-for(let i = 0; i < 10; i ++){
+for(let i = 0; i < 4; i ++){
   gmap.push([]);
-  for(let j = 0; j < 10; j ++){
-    if((i+1) % 3 === 0 || j % 4 === 0){
-      gmap[i].push("=");
-    }else{
-      gmap[i].push(" ");
-    }
+  for(let j = 0; j < 4; j ++){
+    gmap[i].push("=");
   }
 }
 
@@ -28,8 +24,8 @@ var activeSockets = {};
 var waitingSockets = {};
 var controllerSockets = {};
 function Player(){
-  this.x = 100;
-  this.y = 100;
+  this.x = Math.random()*2000;
+  this.y = Math.random()*2000;
   this.r = 0;
   this.v = 1;
   this._r = 0;
@@ -46,6 +42,9 @@ Player.prototype.process = function(){
   this.r += Math.min(this.v, 2) * this._r * Math.PI/180;
   this.v /= 1.1;
   this.v += this._v;
+  
+  this.x = Math.min(Math.max(0, this.x), 2000);
+  this.y = Math.min(Math.max(0, this.y), 2000);
 };
 Player.prototype.getData = function(){
   return {
