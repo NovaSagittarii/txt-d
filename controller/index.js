@@ -8,7 +8,7 @@ var socketid = ncp.paste();
 socket.on("connect", function(){
   console.log(socketid);
   socket.emit("controller", {id: socketid});
-  
+
   socket.on("verified", function(){
     const five = require("johnny-five");
     const board = new five.Board();
