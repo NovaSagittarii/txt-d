@@ -6,6 +6,7 @@ var a = 0;
 var v = 0;
 var r = 0;
 var plyrs = [];
+var gmap = [];
 
 function xyr($x, $y, $r){
   this.x = $x;
@@ -25,8 +26,9 @@ function update(data){
     plyrs.push(Object.assign({}, others[i]));
   }
 }
-function alertSocketID(socketid){
-  alert(socketid);
+function alertSocketID(server){
+  alert(server.socketid);
+  gmap = server.gmap;
 }
 
 socket.emit('requestSocketid', {});

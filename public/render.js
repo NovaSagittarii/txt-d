@@ -29,7 +29,13 @@ var mousePressed = function(){
   mp = true;
 };
 
-var dewae, cahr;
+var cahr, notu;
+var road = {
+  r1: null,
+  r2: null,
+  r3: null,
+  r4: null,
+};
 function preload() {
   font = loadFont('assets/Agency-FB.ttf');
 }
@@ -41,8 +47,9 @@ function setup() {
   textAlign(CENTER, CENTER);
   imageMode(CENTER);
   strokeCap(PROJECT);
-  dewae = loadImage("assets/dewae.png");
   cahr = loadImage("assets/cahr.png");
+  notu = loadImage("assets/notu.png");
+  road.r4 = loadImage("assets/r4.png");
 }
 function draw(){
   background(255, 255, 255);
@@ -50,12 +57,25 @@ function draw(){
   noStroke();
 
   translate(width/2, height/2);
-  scale(Math.min(1/(v/10), 3));
+  scale(Math.min(1/(Math.abs(v)/10), 3));
   translate(-x, -y);
 
   //fill(173);
 
   //render the road
+  for(let i = 0; i < gmap.length; i ++){
+    for(let j = 0; j < gmap[i].length; j ++){
+      let img;
+      switch(gmap[i][j]){
+        case "=":
+          img = road.r4;
+          break;
+        default:
+          continue;
+      }
+      if(img) image(img, j*150, i*150, 150, 150);
+    }
+  }
   noTint();
 
   for(var i = 0; i < exhaust.length; i ++){

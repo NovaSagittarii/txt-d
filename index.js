@@ -14,7 +14,7 @@ var gmap = [];
 for(let i = 0; i < 10; i ++){
   gmap.push([]);
   for(let j = 0; j < 10; j ++){
-    if((i+1) % 3 === 0 || (j+2) % 4 === 0){
+    if((i+1) % 3 === 0 || j % 4 === 0){
       gmap[i].push("=");
     }else{
       gmap[i].push(" ");
@@ -31,21 +31,21 @@ function Player(){
   this.x = 100;
   this.y = 100;
   this.r = 0;
-  this.v = 0;
+  this.v = 1;
   this._r = 0;
-  this._v = 0;
+  this._v = 1;
 }
 Player.prototype.updateState = function(cx, cy){
-  this._r = cx;
-  this._v = cy;
+  if(Math.abs(cx) > 1 || Math.abs(cy) > 1) return;
+  this._r = cx*2;
+  this._v = cy*5;
 };
 Player.prototype.process = function(){
   this.x += Math.cos(this.r) * this.v;
   this.y += Math.sin(this.r) * this.v;
   this.r += this.v * this._r * Math.PI/180;
   //this.v /= 1.1;
-  this.v -= (this.v - this._v) / 5;
-  console.log(this._v);
+  this.v -= (this.v - this._v) / 20;
 };
 Player.prototype.getData = function(){
   return {
@@ -80,6 +80,8 @@ function disconnect(socketid){
   }, 10000);
 }
 
+plyrID.push("f");
+plyr.f = new Player();
 io.on('connection', function(socket){
   console.log(' > new connection! cID: ' + socket.id);
   waitingSockets[socket.id] = true;
@@ -117,6 +119,7 @@ io.on('connection', function(socket){
   });
   socket.on("joystick", function(data){
     if(controllerSockets[socket.id]){
+      console.log(controllerSockets[socket.id]);
       console.log(plyr[controllerSockets[socket.id]].v);
       plyr[controllerSockets[socket.id]].updateState(data.x, data.y);
     }else{
@@ -124,7 +127,10 @@ io.on('connection', function(socket){
     }
   });
   socket.on("requestSocketid", function(){
-    io.to(socket.id).emit("returnSocketid", socket.id);
+    io.to(socket.id).emit("returnSocketid", {
+      socketid: socket.id,
+      gmap: gmap.slice(0)
+    });
   });
 });
 server.listen(process.env.PORT || 3000, '0.0.0.0', function(){
