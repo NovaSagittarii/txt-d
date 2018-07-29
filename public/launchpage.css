@@ -183,9 +183,3 @@ button:hover {
 		transform: translateY(-10px);
 	}
 }
-.on{
-  transition:2s;
-}
-.on:active{
-  transform:translateY(-200vh);
-}
