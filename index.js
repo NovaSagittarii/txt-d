@@ -38,14 +38,14 @@ function Player(){
 Player.prototype.updateState = function(cx, cy){
   if(Math.abs(cx) > 1 || Math.abs(cy) > 1) return;
   this._r = cx*2;
-  this._v = cy*12;
+  this._v = cy;
 };
 Player.prototype.process = function(){
   this.x += Math.cos(this.r) * this.v;
   this.y += Math.sin(this.r) * this.v;
   this.r += Math.min(this.v, 2) * this._r * Math.PI/180;
-  //this.v /= 1.1;
-  this.v -= (this.v - this._v) / 100;
+  this.v /= 1.1;
+  this.v += this._v;
 };
 Player.prototype.getData = function(){
   return {
