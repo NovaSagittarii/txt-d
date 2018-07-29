@@ -120,6 +120,7 @@ io.on('connection', function(socket){
     io.to(socket.id).emit('setConfig', config);
   });*/
   socket.on('disconnect', function(){
+    io.to(socket.id).emit("die", {})l
     disconnect(socket.id);
   });
   socket.on("controller", function(data){
