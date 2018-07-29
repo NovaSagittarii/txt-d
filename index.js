@@ -84,9 +84,11 @@ function update(){
 }
 
 function remove(socketid){
-  delete plyr[socketid];
-  plyrID.splice(plyrID.indexOf(socketid), 1);
-  console.log(' < deleted user    cID: ' + socketid);
+  io.to(socketid).emit("die", {});
+  setTimeout(function(){
+    delete plyr[socketid];
+    plyrID.splice(plyrID.indexOf(socketid), 1);
+    console.log(' < deleted user    cID: ' + socketid);}, 500);
 }
 function disconnect(socketid){
   /*console.log(' < disconnection!  cID: ' + socketid);
@@ -120,7 +122,6 @@ io.on('connection', function(socket){
     io.to(socket.id).emit('setConfig', config);
   });*/
   socket.on('disconnect', function(){
-    io.to(socket.id).emit("die", {});
     disconnect(socket.id);
   });
   socket.on("controller", function(data){
