@@ -66,10 +66,16 @@ function update(){
     for(let j = 0; j < plyrID.length; j ++){
       if(i === j) continue;
       if(dist(Plyr.x, Plyr.y, plyr[plyrID[j]].x, plyr[plyrID[j]].y) < 100){
-        Plyr.v *= -2;
-        plyr[plyrID[j]].v *= -2;
+        Plyr.v = 20;
+        plyr[plyrID[j]].v = 20;
+        Plyr.r = (Plyr.r + plyr[plyrID[j]])/2;
+        plyr[plyrID[j]].r += Math.PI;
         Plyr.process();
         plyr[plyrID[j]].process();
+
+        remove(plyrID[i]);
+        remove(plyrID[j]);
+        return;
       }
       updateData.others.push(plyr[plyrID[j]].getData());
     }
@@ -77,6 +83,11 @@ function update(){
   }
 }
 
+function remove(socketid){
+  delete plyr[socketid];
+  plyrID.splice(plyrID.indexOf(socketid), 1);
+  console.log(' < deleted user    cID: ' + socketid);
+}
 function disconnect(socketid){
   /*console.log(' < disconnection!  cID: ' + socketid);
   delete waitingSockets[socketid];
@@ -132,8 +143,10 @@ io.on('connection', function(socket){
     }
   });
   socket.on("manual", function(data){
-    if(activeSockets[socket.id]){
+    if(plyr[socket.id]){
       plyr[socket.id].updateState(data.x, data.y);
+    }else{
+      socket.disconnect();
     }
   });
   socket.on("requestSocketid", function(){
