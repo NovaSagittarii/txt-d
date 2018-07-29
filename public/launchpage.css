@@ -163,9 +163,7 @@ button:hover {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
-.on{
-  transition:2s;
-}
+
 
 @keyframes bounce {
 	0%, 20%, 60%, 100% {
