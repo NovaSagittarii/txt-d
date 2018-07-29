@@ -1,4 +1,4 @@
-var typing = `boi pls pay attention at the road ahead of you so that you dont fail terribly at driving lorem ipsum dolor set the fitnessgram pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues to get more difficult   Chess is a relatively bad tactical turn based RPG developed by a bunch of monkeys. Right away you'll notice Chess has no storyline. Instead, all you notice is the White army and the Black army are fighting each other over a battlefield. Note the a 'battlefield,' because Chess only has one story map. As for the actual combat, it's extremely dull. Each unit can kill another with only one hit. This means units with a real good movement ability dominate the field (more on that bellow). There aren't even any combat animations or anything that happens in combat. One unit moves on it's space and 'captures' it, and the piece is removed from the game with no form of action or special effects. oh by the way this doesn't end, but in real life, remember to not text and drive at the same time"`;
+var typing = `boi pls pay attention at the road ahead of you so that you dont fail terribly at driving lorem ipsum dolor set the fitnessgram pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues to get more difficult   Chess is a relatively bad tactical turn based RPG developed by a bunch of monkeys Right away youwillll notice Chess has no storyline Instead all you notice is the White army and the Black army are fighting each other over a battlefield Note the a battlefield because Chess only has one story map As for the actual combat, its extremely dull Each unit can kill another with only one hit. This means units with a real good movement ability dominate the field ore on that bellow There arent even any combat animations or anything that happens in combat. One unit moves on its space and captures it, and the piece is removed from the game with no form of action or special effects. oh by the way this doesnot end but in fakent life remember to not text and drive at the same time`;
 var typed = "";
 var exhaust = []; //EXHAUST
 var ytrans = 0;
@@ -57,7 +57,7 @@ function draw(){
   noStroke();
 
   translate(width/2, height/2);
-  scale(Math.min(1/(Math.abs(v)/10), 3));
+  scale(Math.min(1/(Math.abs(v)/4), 1));
   translate(-x, -y);
 
   //fill(173);
@@ -73,7 +73,7 @@ function draw(){
         default:
           continue;
       }
-      if(img) image(img, j*150, i*150, 150, 150);
+      if(img) image(img, j*500, i*500, 500, 500);
     }
   }
   noTint();
@@ -86,6 +86,14 @@ function draw(){
     rect(0, 0, 10, 10);
     pop();
     if(!(exhaust[i].d--)) exhaust.splice(i, 1);
+  }
+
+  for(let i = 0; i < plyrs.length; i ++){
+    push();
+    translate(plyrs[i].x, plyrs[i].y);
+    rotate(plyrs[i].r);
+    image(notu, 0, 0, 100, 200);
+    pop();
   }
 
   //r  = atan2(mouseY - 400, mouseX - 300);
@@ -120,9 +128,19 @@ function draw(){
 
   text(~~frameRate() + "fps", 45, 25);
   mp = false;
+
+  stroke(0);
+  line(width/2, height/2, mouseX, height/2);
+  line(mouseX, height/2, mouseX, mouseY);
+  noStroke();
 };
 
-
+function mouseMoved() {
+  let cx = 2*mouseX/width - 1;
+  let cy = 2*mouseY/height - 1;
+  console.log(cx+";"+cy);
+  socket.emit("manual", {x: cx, y: -cy});
+}
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }

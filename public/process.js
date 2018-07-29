@@ -23,17 +23,20 @@ function update(data){
   r = data.self.r;
   const others = data.others;
   for(let i = 0; i < others.length; i ++){
-    plyrs.push(Object.assign({}, others[i]));
+    plyrs.push(others[i]);
   }
+  console.log(others);
+
+  plyrs = data.others;
 }
 function alertSocketID(server){
-  alert(server.socketid);
+  //alert(server.socketid);
   gmap = server.gmap;
 }
 
 socket.emit('requestSocketid', {});
 socket.on('returnSocketid', alertSocketID);
-socket.on('dataBroadcast', update)
+socket.on('dataBroadcast', update);
 
 //initialize
 /*function setup() {

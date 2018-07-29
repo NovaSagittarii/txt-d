@@ -52,8 +52,8 @@ Player.prototype.getData = function(){
     x: this.x,
     y: this.y,
     r: this.r,
-    v: this.v,
-  }
+    v: this.v
+  };
 };
 
 function update(){
@@ -80,8 +80,6 @@ function disconnect(socketid){
   }, 10000);
 }
 
-plyrID.push("f");
-plyr.f = new Player();
 io.on('connection', function(socket){
   console.log(' > new connection! cID: ' + socket.id);
   waitingSockets[socket.id] = true;
@@ -105,7 +103,6 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     disconnect(socket.id);
   });
-
   socket.on("controller", function(data){
     console.log("received socket claim of " + data.id + " from " + socket.id)
     if(waitingSockets[data.id]){
@@ -126,17 +123,24 @@ io.on('connection', function(socket){
       disconnect(socket.id); // remove unregistered controller
     }
   });
+  socket.on("manual", function(data){
+    if(activeSockets[socket.id]){
+      plyr[socket.id].updateState(data.x, data.y);
+    }
+  });
   socket.on("requestSocketid", function(){
     io.to(socket.id).emit("returnSocketid", {
       socketid: socket.id,
       gmap: gmap.slice(0)
     });
+    if(waitingSockets[socket.id]){
+      delete waitingSockets[socket.id];
+      plyrID.push(socket.id);
+      activeSockets[socket.id] = plyr[socket.id] = new Player();
+    }
   });
 });
 server.listen(process.env.PORT || 3000, '0.0.0.0', function(){
-  for(var i in this.address()){
-    console.log(i + "::" + this.address()[i]);
-  }
   console.log("Express server listening at " + this.address().address + ":" + this.address().port + " in " + app.settings.env + "mode");
   console.log(`Running at ${(1e3/Math.round(1e3 / config.targetFrameRate)).toFixed(2)}FPS`);
 });
