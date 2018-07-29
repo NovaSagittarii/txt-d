@@ -38,14 +38,14 @@ function Player(){
 Player.prototype.updateState = function(cx, cy){
   if(Math.abs(cx) > 1 || Math.abs(cy) > 1) return;
   this._r = cx*2;
-  this._v = cy*8;
+  this._v = cy*12;
 };
 Player.prototype.process = function(){
   this.x += Math.cos(this.r) * this.v;
   this.y += Math.sin(this.r) * this.v;
   this.r += Math.min(this.v, 2) * this._r * Math.PI/180;
   //this.v /= 1.1;
-  this.v -= (this.v - this._v) / 20;
+  this.v -= (this.v - this._v) / 100;
 };
 Player.prototype.getData = function(){
   return {
@@ -66,8 +66,10 @@ function update(){
     for(let j = 0; j < plyrID.length; j ++){
       if(i === j) continue;
       if(dist(Plyr.x, Plyr.y, plyr[plyrID[j]].x, plyr[plyrID[j]].y) < 100){
-        Plyr.v *= -1.2;
-        plyr[plyrID[j]].v *= -1.2;
+        Plyr.v *= -2;
+        plyr[plyrID[j]].v *= -2;
+        Plyr.process();
+        plyr[plyrID[j]].process();
       }
       updateData.others.push(plyr[plyrID[j]].getData());
     }
