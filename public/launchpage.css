@@ -1,0 +1,191 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;;
+    cursor: default;
+
+    user-select: none;
+
+}
+html, body {
+  margin: 0; height: 100%; overflow: hidden
+}
+
+#blueBar{
+  animation-duration: 3s;
+  animation-name: slideinright;
+  position: fixed;
+  width: 30vw;
+  height: 100vh;
+  background: radial-gradient(rgba(2, 20, 51,0.7), rgba(11, 3, 30,0.7));
+  z-index: 1;
+  float:left;
+  padding-top: 2.5%;
+}
+
+#blueBar:hover{
+  background: radial-gradient(rgba(2, 20, 51,0.9), rgba(11, 3, 30,0.9));
+}
+
+#blueBar h1{
+  padding: 0.5em;
+  font-family: "Agency FB", Helvetica, sans-serif;
+  color: #f2f4f7;
+  text-align: center;
+  font-size: 9vh;
+  text-decoration: underline;
+  letter-spacing: 7px;
+}
+
+
+#blueBar p{
+  padding: 0.5em;
+  font-family: "Agency FB", Helvetica, sans-serif;
+  color: #c7d1e0;
+  text-align: center;
+  font-size: 5vh;
+  line-height: 125%;
+}
+
+#blueBox{
+  position: fixed;
+  right:0px;
+  top:0px;
+  width: 30vw;
+  height: 100vh;
+  background: radial-gradient(rgba(2, 20, 51,0.7), rgba(11, 3, 30,0.7));
+  z-index: 1;
+  float:right;
+  padding-top:3%;
+  animation-duration: 3s;
+  animation-name: slideinleft;
+}
+
+#blueBox:hover{
+  background: radial-gradient(rgba(2, 20, 51,0.9), rgba(11, 3, 30,0.9));
+}
+#blueBox h1{
+  padding: 0.5em;
+  font-family: "Agency FB", Helvetica, sans-serif;
+  color: #f2f4f7;
+  text-align: center;
+  font-size: 50px;
+  text-decoration: underline;
+  letter-spacing: 7px;
+}
+
+#blueBox h2{
+  padding: 0.5em;
+  font-family: "Agency FB", Helvetica, sans-serif;
+  color: #f2f4f7;
+  text-align: center;
+  font-size: 6vh;
+}
+
+#blueBox p{
+  padding: 0.5em;
+  font-family: "Agency FB", Helvetica, sans-serif;
+  color: #c7d1e0;
+  text-align: center;
+  font-size: 5vh;
+  line-height: 125%;
+}
+
+#blueBox img{
+  position: fixed;
+  height: 15vh;
+  width: 10vw;
+}
+
+.imagew{
+  padding-bottom: 2em;
+  margin: 0px;
+}
+
+.imgText{
+  margin-top: 0.5em;
+  margin-right: 0.35em;
+  float: right;
+  border-top: 20px;
+  display: block;
+}
+
+.wrapper{
+  text-align: center;
+}
+
+img{
+  position: fixed;
+  background-repeat: no-repeat;
+  height:100%;
+  width:100%;
+  z-index: -1;
+align-content: left;
+}
+
+button{
+  margin-top: 77vh;
+  background-color: rgba(54, 189, 216,0.5);
+  border: none;
+  color: white;
+  padding: 25px 35px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 45px;
+  font-family: "Agency FB", Helvetica, sans-serif;
+}
+
+button:hover {
+    background-color: rgba(255,207,39,0.9);
+    animation: bounce 1s;
+    /* color: rgba(2, 20, 51, 1); */
+}
+
+.animated {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+.on{
+  transition:2s;
+}
+
+@keyframes bounce {
+	0%, 20%, 60%, 100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	40% {
+		-webkit-transform: translateY(-20px);
+		transform: translateY(-20px);
+	}
+
+	80% {
+		-webkit-transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+}
+.on{
+  transition:2s;
+}
+.on:active{
+  transform:translateY(-200vh);
+}
