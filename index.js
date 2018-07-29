@@ -134,7 +134,10 @@ io.on('connection', function(socket){
   });
 });
 server.listen(process.env.PORT || 3000, '0.0.0.0', function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  for(var i in this.address()){
+    console.log(i + "::" + this.address()[i]);
+  }
+  console.log("Express server listening at " + this.address().address + ":" + this.address().port + " in " + app.settings.env + "mode");
   console.log(`Running at ${(1e3/Math.round(1e3 / config.targetFrameRate)).toFixed(2)}FPS`);
 });
 
