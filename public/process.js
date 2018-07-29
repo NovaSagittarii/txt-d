@@ -38,10 +38,10 @@ socket.emit('requestSocketid', {});
 socket.on('returnSocketid', alertSocketID);
 socket.on('dataBroadcast', update);
 
-const rant = ["Texting can make vehicle accidents 23 times more likely to happen.", "Each day in the United States, approximately 9 people are killed and more than 1,000 injured in crashes that are reported to involve a distracted driver", "In 2015, there were 3,477 people killed and an estimated additional 391,000 injured in motor vehicle crashes involving distractions."]; 
+const rant = ["Texting can make vehicle accidents 23 times more likely to happen.", "Each day in the United States, approximately 9 people are killed and more than 1,000 injured in crashes that are reported to involve a distracted driver", "In 2015, there were 3,477 people killed and an estimated additional 391,000 injured in motor vehicle crashes involving distractions.", "Driving distracted is compared to drunk driving since it follows the same psychological pattern: when drivers get away with driving distracted, they then continue to practice this bad habit until a crash occurs or until they are caught and suffer consequences.", "In 2012, 11% of drivers under age 20 involved in fatal accidents were reported to be distracted at the time of the crash."]; 
 socket.on('die', function(){
   noLoop();
-  draw = function(){background(0,0,0);};
+  draw = function(){background(0,0,0);fill(255);textSize(50);text("GAMEOVER", width/2, height/2);};
   textSize(20);
   for(var i = 0; i < rant.length; i ++){
     alert(rant[i]);
