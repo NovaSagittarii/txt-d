@@ -43,7 +43,7 @@ Player.prototype.updateState = function(cx, cy){
 Player.prototype.process = function(){
   this.x += Math.cos(this.r) * this.v;
   this.y += Math.sin(this.r) * this.v;
-  this.r += this.v * this._r * Math.PI/180;
+  this.r += Math.min(this.v, 2) * this._r * Math.PI/180;
   //this.v /= 1.1;
   this.v -= (this.v - this._v) / 20;
 };
@@ -63,6 +63,10 @@ function update(){
     let updateData = {self: Plyr, others: []};
     for(let j = 0; j < plyrID.length; j ++){
       if(i === j) continue;
+      if(dist(Plyr.x, Plyr.y, plyr[plyrID[j]].x, plyr[plyrID[j]].y) < 100){
+        Plyr.v *= -1.2;
+        plyr[plyrID[j]].v *= -1.2;
+      }
       updateData.others.push(plyr[plyrID[j]].getData());
     }
     io.to(plyrID[i]).emit("dataBroadcast", updateData)
