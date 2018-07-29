@@ -83,7 +83,7 @@ function draw(){
     translate(exhaust[i].x, exhaust[i].y);
     rotate(exhaust[i].r+Math.PI/2);
     fill(0, exhaust[i].d*10);
-    rect(0, 0, 10, 10);
+    rect(0, 0, exhaust[i].d/1.5, exhaust[i].d/1.5);
     pop();
     if(!(exhaust[i].d--)) exhaust.splice(i, 1);
   }
@@ -94,7 +94,7 @@ function draw(){
     rotate(plyrs[i].r + Math.PI/2);
     image(notu, 0, 0, 100, 200);
     pop();
-    exhaust.push(Object.assign({d: 40}, new xyr(plyrs[i].x+Math.cos(plyrs[i].r+Math.PI)*100, plyrs[i].y+Math.sin(plyrs[i].r+Math.PI)*100, plyrs[i].r)));
+    exhaust.push(Object.assign({d: 20}, new xyr(plyrs[i].x+Math.cos(plyrs[i].r+Math.PI)*100, plyrs[i].y+Math.sin(plyrs[i].r+Math.PI)*100, plyrs[i].r+Math.random*0.1-0.05)));
   }
 
   //r  = atan2(mouseY - 400, mouseX - 300);
@@ -106,7 +106,7 @@ function draw(){
   x += Math.cos(r)*(v);
   y += Math.sin(r)*(v);
   //v = constrain(v+0.0005*100, 3, 25);
-  exhaust.push(Object.assign({d: 20}, new xyr(x+Math.cos(r+Math.PI)*100, y+Math.sin(r+Math.PI)*100, r)));
+  exhaust.push(Object.assign({d: 20}, new xyr(x+Math.cos(r+Math.PI)*100, y+Math.sin(r+Math.PI)*100, r+Math.random*0.1-0.05)));
 
   resetMatrix();
 

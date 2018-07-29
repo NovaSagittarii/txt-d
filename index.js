@@ -38,7 +38,7 @@ function Player(){
 Player.prototype.updateState = function(cx, cy){
   if(Math.abs(cx) > 1 || Math.abs(cy) > 1) return;
   this._r = cx*2;
-  this._v = cy*5;
+  this._v = cy*8;
 };
 Player.prototype.process = function(){
   this.x += Math.cos(this.r) * this.v;
