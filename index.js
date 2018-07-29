@@ -70,14 +70,14 @@ function update(){
 }
 
 function disconnect(socketid){
-  console.log(' < disconnection!  cID: ' + socketid);
+  /*console.log(' < disconnection!  cID: ' + socketid);
   delete waitingSockets[socketid];
   delete controllerSockets[socketid];
   setTimeout(function(){
     delete plyr[socketid];
     plyrID.splice(plyrID.indexOf(socketid), 1);
     console.log(' < deleted user    cID: ' + socketid);
-  }, 10000);
+  }, 10000);*/
 }
 
 io.on('connection', function(socket){
